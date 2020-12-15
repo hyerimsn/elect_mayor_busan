@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+    <link href="index.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+
+    <div id="app">
+        <div class="main">
+            <div class="large-12 columns">
+                <div class="title" v-if="!isHidden">
+                    <h1>{{ quiz.title }}</h1>
+                    <button class="startbutton" v-on:click="isHidden = true">시작하기</button>
+                </div>
+
+                <div class="quiz_wrapper" v-if="isHidden">
+                    <div class="callout">
+                        <div class="pr_wrapper">
+                            <ul id="progressbar" class="progressbar">
+                                <li class="active">1</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>5</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>10</li> 
+                                <li>.</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>.</li>
+                                <li>15</li>
+                            </ul>
+                        </div>
+                        <!-- <div v-for="(question, index) in quiz.questions">
+                            <div v-show="index === questionIndex">
+                                <h3 class="question">{{ question.text }}</h3>
+                                <div class="answer">
+                                    <ol>
+                                        <li v-for="response in question.responses">
+                                            <label>
+                                                <input class="select" type="radio" v-bind:value="response.value" v-bind:name="index" v-model="userResponses[index]">
+                                                {{response.text}}
+                                            </label>
+                                        </li>
+                                    </ol>
+                                </div>
+                                <button class="secondary button" v-if="questionIndex > 0" v-on:click="prev" id="prev_step">prev</button>
+                                <button class="success button" v-on:click="next" id="next_step">next</button>
+                            </div>
+                        </div> -->
+                        <div v-for="(question, index) in quiz.questions">
+                            <div v-show="index === questionIndex">
+                                <h3 class="question">{{ question.text }}</h3>
+                                    <div class="answer_wrap">
+                                        <div class="answer" v-for="response in question.responses">
+                                            <label>
+                                                <input type="radio" v-bind:value="response.value" v-bind:name="index" v-model="userResponses[index]">
+                                                <div class="answer_box">{{response.text}}</div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                <div class="btn_wrap">
+                                    <button class="secondary button" v-if="questionIndex > 0" v-on:click="prev" id="prev_step">prev</button>
+                                    <button class="success button" v-if="questionIndex === (userResponses.length -1)" v-on:click="next" id="next_step">next</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-show="questionIndex === quiz.questions.length">
+                            <div>
+                                <br>
+                                <br>
+                                당신은 {{ score() }} 유형입니다.
+                                {{ perc() }} % 일치하는군요!
+                                <canvas id="gauge"></canvas>
+                            </div>
+                            <div v-for="item in results.results">
+                                <div v-show="score() === item.score">
+                                    {{ item.score }}
+                                    <div class="img_wrap" v-for="image in item.value">
+                                        <img v-bind:src="image.img">
+                                        {{image.desc}}
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        window.onload = function(){
+
+            var Quiz = {
+                title: '무슨무슨 테스트',
+
+                questions : [{
+                    text: "나의 정치적 지향점은 무엇입니까?",
+                    responses : [{
+                        text: "진보",
+                        value: ["밀양", "부산"]
+                    },
+                    {
+                        text: "중도",
+                        value: ["아프리카"]
+                    },
+                    {
+                        text: "보수",
+                        value: ["전성하", "박민식"]
+                    }]
+                },
+                {
+                    text: "문재인 정부의 이념 성향은 어떻게 보십니까?",
+                    responses: [{
+                        text: "진보",
+                        value: ["밀양"]
+                    },
+                    {
+                        text: "중도진보",
+                        value: ["아프리카"]
+                    },
+                    {
+                        text: "보수",
+                        value: ["캘리포니아", "부산"]
+                    },
+                    {
+                        text: "중도보수",
+                        value: ["캘리포니아", "부산"]
+                    },
+                    {
+                        text: "중도",
+                        value: ["캘리포니아", "부산"]
+                    },
+                    {
+                        text: "기타",
+                        value: ["전성하", "박민식"]
+                    }]
+                },
+                {
+                    text: "문재인 정부의 국정운영에 대해 몇 점을 주시겠습니까? (1점이 최하, 5점이 최고)",
+                    responses: [{
+                        text: "1점",
+                        value: ["전성하", "박민식"]
+                    },
+                    {
+                        text: "2점",
+                        value: ["아프리카"]
+                    },
+                    {
+                        text: "3점",
+                        value: ["캘리포니아"]
+                    },
+                    {
+                        text: "4점",
+                        value: ["캘리포니아"]
+                    },
+                    {
+                        text: "5점",
+                        value: ["캘리포니아"]
+                    }]
+                }
+
+                // 실제 시 주석처리 해제할 것🎉🎉🎉🎉🎉🎉🎉🎉
+                // {
+                //     text: "당신이 생각하는 올바른 대통령의 리더십과 가장 닮은 대통령은 누구입니까?",
+                //     responses: [{
+                //         text: "이승만",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "박정희",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "전두환",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "노태우",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "김영삼",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "김대중",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "노무현",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "이명박",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "박근혜",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "문재인",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "없다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "우리나라의 건국일은 언제라고 생각하십니까?",
+                //     responses: [{
+                //         text: "1919년",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "1948년",
+                //         value: ["전성하", "박민식"]
+                //     }]
+                // },
+                // {
+                //     text: "부산이 가장 시급하게 해결해야 할 문제는 무엇이라고 생각하십니까?",
+                //     responses: [{
+                //         text: "저출산 고령화와 청년 인구유출",
+                //         value: ["박민식", "부산"]
+                //     },
+                //     {
+                //         text: "주력산업 붕괴와 신성장산업 부재",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "수도권 일극주의",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "동-서부산권(동네별) 격차",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "중구난방식 개발",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "부산시는 지역화폐 동백전을 운용 중입니다. 지역화폐에 대한 생각은?",
+                //     responses: [{
+                //         text: "확대해야 한다",
+                //         value: ["전성하", "부산"]
+                //     },
+                //     {
+                //         text: "현행 수준을 유지해야 한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "축소해야 한다",
+                //         value: ["박민식", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "아예 없애야 한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "북항 재개발 사업 구역의 초고층 건물 허가에 대해 논란이 많습니다. 이에 대한 생각은?",
+                //     responses: [{
+                //         text: "주거시설과 초고층건물을 허용해 고밀도 개발",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "사업성이 떨어져도 친수공간 확보와 저밀도 개발",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "기타",
+                //         value: ["전성하", "박민식"]
+                //     }]
+                // },
+                // {
+                //     text: "가덕도 신공항을 추진하는 데 가장 필요한 것은 무엇이라고 보십니까?",
+                //     responses: [{
+                //         text: "부산 울산 경남 시민들의 협조",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "대구 경북 등 다른 지자체의 협조",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "정부의 강력한 의지",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "정치권의 지지",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "부산울산경남의 행정구역 통합에 대한 의견은?",
+                //     responses: [{
+                //         text: "적극 찬성한다",
+                //         value: ["박민식", "부산"]
+                //     },
+                //     {
+                //         text: "느슨한 형태의 통합을 거쳐 단계적인 통합이 필요하다",
+                //         value: ["전성하", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "행정구역 통합에 반대한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "행정구역 통합 대신 부산울산경남의 협치를 강화해야 한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "민간사업자가 추진 중인 해운대~오륙도 해상케이블카 사업에 대한 의견은 무엇입니까?",
+                //     responses: [{
+                //         text: "관광활성화와 고용 창출을 위해 적극 추진해야 한다",
+                //         value: ["박민식", "부산"]
+                //     },
+                //     {
+                //         text: "환경 파괴 논란이 큰 만큼 중단해야 한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "기타",
+                //         value: ["전성하", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "BRT(버스전용차로) 부산 전역 확대에 대한 의견은 무엇인가요?",
+                //     responses: [{
+                //         text: "즉시 추진해야 한다",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "장기적 관점에서 추진해야 한다",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "추가 확대를 반대한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "기존 구간도 원상복구 해야한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "코로나19 확산에 따라 정부의 재정 투입이 늘고있습니다. 이에 대한 의견은?",
+                //     responses: [{
+                //         text: "정부 부채가 늘어나도 전국민 대상 보편적 지원을 늘려야 한다",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "소상공인이나 저소득층 등을 위한 선별적 지원만 해야 한다",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "더 이상의 재정 투입을 통한 경기활성화는 중단해야 한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "기타",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "52시간 근로제의 중소기업 전면 적용을 코로나19 위기 극복 이후로 연기하자는 제안에 대한 생각은?",
+                //     responses: [{
+                //         text: "찬성한다",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "반대한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "정부의 부동산 정책에 대한 생각은?",
+                //     responses: [{
+                //         text: "방향성이 맞으므로 적극 추진해야 한다",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "집값 폭등을 유발한 만큼 방향을 전환해야 한다",
+                //         value: ["박민식", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "기타",
+                //         value: ["전성하", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "탈원전에 대한 의견은 무엇입니까?",
+                //     responses: [{
+                //         text: "적극 추진해야 한다",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "필요하지만 속도 조절이 필요하다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "일시 중단하고 다시 고민해봐야 한다",
+                //         value: ["전성하", "캘리포니아"]
+                //     },
+                //     {
+                //         text: "즉시 중단하고 원전을 유지해야 한다",
+                //         value: ["박민식", "캘리포니아"]
+                //     }]
+                // },
+                // {
+                //     text: "기본소득에 대해 어떻게 생각하십니까?",
+                //     responses: [{
+                //         text: "지금부터 시행해야 한다",
+                //         value: ["밀양", "부산"]
+                //     },
+                //     {
+                //         text: "1~5년에 걸쳐 단계적으로 시행해야 한다",
+                //         value: ["전성하", "박민식"]
+                //     },
+                //     {
+                //         text: "기본소득 도입에 반대한다",
+                //         value: ["아프리카", "캘리포니아"]
+                //     }]
+                // }
+            ]
+            };
+
+            var Resultdata = {
+                results : [
+                {
+                        score: "전성하",
+                        value: [{
+                            desc: "전성하여",
+                            img: "https://www.freeimg.net/photo/1856442/tausendschon-springflower-garden-daisy",
+                    }]
+                },
+                {
+                        score: "박민식",
+                        value: [{
+                            desc: "박민식박민식박민식",
+                            img: "https://www.freeimg.net/photo/1856442/tausendschon-springflower-garden-daisy",
+                    }]
+                },
+                {
+                        score: "밀양",
+                        value: [{
+                            desc: "당신은 밀양 타입이시군요. 밀양 타입ㅇ븐 어쩌구저쩌꾸입니다.",
+                            img: "C:/Users/USER/Desktop/quiz_template/img/result.png",
+                    }]
+                },
+                    {
+                        score:"아프리카",
+                        value: [{
+                            desc: "당신은 아프리카군요. 어저엉ㅈ러머ㅓㅁ엄",
+                            img: "https://www.freeimg.net/photo/1651932/snowdrop-spring-flower-bloom",
+                    }]
+                },
+                    {
+                        score:"캘리포니아",
+                        value: [{
+                            desc: "당신은 캘리포니아군요. 뉴욕가고싶어",
+                            img: "https://www.freeimg.net/photo/570259/spring-crocus-snowdrop-springmeadow",
+                    }]
+                },
+                {
+                        score:"부산",
+                        value: [{
+                            desc: "붓산아입니까",
+                            img: "https://www.freeimg.net/photo/570259/spring-crocus-snowdrop-springmeadow",
+                    }]
+                }],
+            };
+
+            var chartData = {
+                type: 'line',
+                data: {
+                    labels: ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'],
+                    datasets: [
+                    { // one line graph
+                        label: 'Number of Moons',
+                        data: [0, 0, 1, 2, 67, 62, 27, 14],
+                        backgroundColor: [
+                        'rgba(54,73,93,.5)', // Blue
+                        'rgba(54,73,93,.5)',
+                        'rgba(54,73,93,.5)',
+                        'rgba(54,73,93,.5)',
+                        'rgba(54,73,93,.5)',
+                        'rgba(54,73,93,.5)',
+                        'rgba(54,73,93,.5)',
+                        'rgba(54,73,93,.5)'
+                        ],
+                        borderColor: [
+                        '#36495d',
+                        '#36495d',
+                        '#36495d',
+                        '#36495d',
+                        '#36495d',
+                        '#36495d',
+                        '#36495d',
+                        '#36495d',
+                        ],
+                        borderWidth: 3
+                    },
+                    { // another line graph
+                        label: 'Planet Mass (x1,000 km)',
+                        data: [4.8, 12.1, 12.7, 6.7, 139.8, 116.4, 50.7, 49.2],
+                        backgroundColor: [
+                        'rgba(71, 183,132,.5)', // Green
+                        ],
+                        borderColor: [
+                        '#47b784',
+                        ],
+                        borderWidth: 3
+                    }
+                ]
+                },
+                options : {
+                    responsive: true,
+                    lineTension: 1,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                padding: 25,
+                            }
+                        }]
+                    }
+                }
+            }
+        
+        new Vue({
+            el: '#app',
+            data: {
+                quiz: Quiz,
+                results : Resultdata,
+                questionIndex: 0,
+                userResponses: Array(),
+                isHidden: false,
+                chartData: chartData,
+            },
+            methods: {
+                next: function() {
+                    if (this.questionIndex === (this.userResponses.length -1)) {
+                        this.questionIndex++;
+                    } else {
+                        alert('답변을 선택해주세요')
+                    }
+
+                    $('#progressbar li:not(.active):first').addClass('active');
+                },
+
+                prev: function() {
+                    this.questionIndex-- ;
+                    $('#progressbar li.active:last').removeClass('active');
+                },
+
+                score: function() {
+                    var modeMap = {};
+                    var maxEl = this.userResponses[0];
+                        maxCount = 1;
+                    for (var i = 0; i < this.userResponses.length; i++){
+                        for (var j = 0; j < this.userResponses[i].length; j++){
+                        var el = this.userResponses[i][j];
+                        if (modeMap[el] == null)
+                            modeMap[el] = 1;
+                        else
+                            modeMap[el]++;
+                        if (modeMap[el] > maxCount) {
+                            maxEl = el;
+                            maxCount = modeMap[el];
+                        }
+                        }
+                    }
+                    console.log(modeMap);
+                    return maxEl;
+
+                },
+                
+                perc: function() {
+                    var modeMap = {};
+                    var maxEl = this.userResponses[0];
+                        maxCount = 1;
+                    for (var i = 0; i < this.userResponses.length; i++){
+                        for (var j = 0; j < this.userResponses[i].length; j++){
+                        var el = this.userResponses[i][j];
+                        if (modeMap[el] == null)
+                            modeMap[el] = 1;
+                        else
+                            modeMap[el]++;
+                        if (modeMap[el] > maxCount) {
+                            maxEl = el;
+                            maxCount = modeMap[el];
+                        }
+                        }
+                    }
+                    return ((modeMap[maxEl] / 3) * 100).toFixed(2);
+                },
+
+                createChart(chartId, chartData) {                
+                    const ctx = $('gauge');
+                    const myChart = new Chart(cts, {
+                        type: chartData.type,
+                        data: chartData.data,
+                        options: chartData.options,
+                    });
+                }
+
+                // colorchange : function() {
+                //     $('label').on('click', function() {
+                //         $(this).css('background-color', '#6253e1');
+                //         $(this).css('background-image', 'none');
+                //         $(this).css('color', '#ffffff')
+                //     });
+                // },
+            }
+
+        })
+    }
+    </script>
+</body>
+</html>
