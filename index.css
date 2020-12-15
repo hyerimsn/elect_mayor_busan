@@ -1,15 +1,54 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #ccc;
+    background-color: rgb(12, 19, 34);
+    color: #ffffff;
 }
 
 #app {
     margin: 0 auto;
     width: 600px;
-    min-height: 100vh;
-    height: auto;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.title {
+    display: fixed;
+    margin-top: 35%;
     overflow: hidden;
+}
+
+.title .title_img {
+    margin: 0 auto;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    display: block;
+    position: relative;
+    width: 40%;
+    opacity: 0;
+    animation: big 3s ease forwards;
+    filter: drop-shadow(0 4px 15px rgba(126, 52, 161, 0.5));
+}
+
+@keyframes big {
+    0% {
+        opacity: 0;
+        width: 40%;
+    }
+
+    100% {
+        opacity: 1;
+        width: 80%;
+    }
+}
+
+.title .election_img{
+    margin: 0 auto;
+    margin-top: 10%;
+    margin-bottom: 5%;
+    display: block;
+    position: relative;
+    width: 70%;
 }
 
 h1 {
@@ -17,8 +56,186 @@ h1 {
     padding: 0;
 }
 
+.vote1 {
+    width: 30px;
+    left: 30%;
+    opacity: 0.5;
+    visibility: hidden;
+    animation: drop1 12s 2s linear infinite;
+    position: absolute;
+    z-index: 0;
+}
+
+@keyframes drop1 {
+    0% {
+        visibility: visible;
+        top: -20%;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.vote2 {
+    width: 40px;
+    left: 36%;
+    opacity: 1;
+    animation: drop2 10s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop2 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.vote3 {
+    width: 200px;
+    left: 44%;
+    opacity: 0.2;
+    animation: drop3 7.5s 3s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop3 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.vote4 {
+    width: 30px;
+    left: 50%;
+    opacity: 0.8;
+    animation: drop4 22.5s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop4 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.vote5 {
+    width: 80px;
+    left: 60%;
+    opacity: 0.4;
+    animation: drop5 12s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop5 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.vote6 {
+    width: 18px;
+    left: 68%;
+    opacity: 0.9;
+    animation: drop6 7s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop6 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.vote7 {
+    width: 68px;
+    left: 73%;
+    opacity: 0.8;
+    animation: drop7 15s 2s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop7 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+
+.vote8 {
+    width: 50px;
+    left: 75%;
+    opacity: 0.5;
+    animation: drop8 19s linear infinite;
+    position: absolute;
+    visibility: hidden;
+    z-index: 0;
+}
+
+@keyframes drop8 {
+    0% {
+        top: -20%;
+        visibility: visible;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+
 .startbutton {
-    position: relative;
+    position: fixed;
+    bottom: 20%;
+    left: 0;
+    right: 0;
     font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
@@ -55,44 +272,77 @@ h1 {
     box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
 }
 
-.progressbar{
+
+#next_step {
+    color: #ffffff;
+    float: right;
+    font-size: 3em;
+    cursor: pointer;
+    transition: all .1s ease-in-out;
+}
+
+#next_step:hover {
+    color: #6253e1;
+    font-size: 4em;
+    text-shadow: 0px 1px 30px rgb(0, 0, 0);
+}
+
+#prev_step {
+    color: #ffffff;
+    float: left;
+    font-size: 3em;
+    cursor: pointer;
+}
+
+#prev_step:hover {
+    color: #6253e1;
+    font-size: 4em;
+    text-shadow: 0px 1px 30px rgb(0, 0, 0);
+}
+
+/* .progressbar{
     margin: 30px auto 30px auto;
     counter-reset: step;
     padding: 0;
     display: block;
+} */
+
+.progressbar {
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    counter-reset: step;
+    padding: 0;
 }
+
 
 .progressbar li {
     list-style-type: none;
-    width: 5%;
+    width: 6.5%;
     float: left;
     font-size: 12px;
     position: relative;
     text-align: center;
-    text-transform: uppercase;
     color: #7d7d7d;
 }
 
 .progressbar li:before {
-    width: 7px;
-    height: 7px;
+    width: 0px;
+    height: 0px;
     content: '';
     line-height: 30px;
-    border: 2px solid #7d7d7d;
-    background-color: #7d7d7d;
     display: block;
     text-align: center;
     margin: 0 auto 10px auto;
-    border-radius: 50%;
     transition: all .8s;
 }
 
 .progressbar li:after{
     width: 100%;
-    height: 2px;
+    height: 8px;
     content: '';
     position: absolute;
-    background-color: #7d7d7d;
+    background-color: #ffffff;
     top: 7px;
     left: -50%;
     z-index: -1;
@@ -127,6 +377,8 @@ h1 {
 .answer_wrap {
     height: 60vh;
     overflow-y: auto;
+    align-items: center;
+    color: #000000;
 }
 
 .answer {
@@ -166,6 +418,7 @@ h1 {
 } */
 
 .answer .answer_box {
+    font-size: 1.2em;
     font-weight: bold;
     width: 80%;
     display: block;
@@ -212,7 +465,7 @@ h1 {
 .btn_wrap {
     display: block;
     position: relative;
-    width: 80%;
+    width: 95%;
     margin: 0 auto;
 }
 
@@ -220,6 +473,22 @@ h1 {
     position: relative;
     width: 50%;
     display: inline-block;
+}
+
+.result_wrap {
+    display: block;
+    position: relative;
+    margin: 0 auto;
+    top: 3em;
+    width: 80%;
+    background: #ffffff;
+    color: #000000;
+    padding: 2em;
+    border-style: solid;
+    border-image: linear-gradient(to right, #6253e1 0%, #852D91 100%);
+    box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.7);
+    border-image-width: 10px;
+    border-image-slice: 1;
 }
 
 .img_wrap img {

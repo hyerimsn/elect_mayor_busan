@@ -9,14 +9,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
     <script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
     <link href="index.css" type="text/css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
 
     <div id="app">
+
         <div class="main">
             <div class="large-12 columns">
                 <div class="title" v-if="!isHidden">
-                    <h1>{{ quiz.title }}</h1>
+                    <img class="vote1" src="img/vote.png">
+                    <img class="vote2" src="img/vote.png">
+                    <img class="vote3" src="img/vote.png">
+                    <img class="vote4" src="img/vote.png">
+                    <img class="vote5" src="img/vote.png">
+                    <img class="vote6" src="img/vote.png">
+                    <img class="vote7" src="img/vote.png">
+                    <img class="vote8" src="img/vote.png">
+                    <img class="election_img" src="img/election.png">
+                    <img class="title_img" src="img/title.png">
                     <button class="startbutton" v-on:click="isHidden = true">시작하기</button>
                 </div>
 
@@ -24,21 +35,21 @@
                     <div class="callout">
                         <div class="pr_wrapper">
                             <ul id="progressbar" class="progressbar">
-                                <li class="active">1</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>5</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>10</li> 
-                                <li>.</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>.</li>
-                                <li>15</li>
+                                <li class="active"></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li> 
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
                             </ul>
                         </div>
                         <!-- <div v-for="(question, index) in quiz.questions">
@@ -70,18 +81,15 @@
                                         </div>
                                     </div>
                                 <div class="btn_wrap">
-                                    <button class="secondary button" v-if="questionIndex > 0" v-on:click="prev" id="prev_step">prev</button>
-                                    <button class="success button" v-if="questionIndex === (userResponses.length -1)" v-on:click="next" id="next_step">next</button>
+                                    <i class="material-icons" v-if="questionIndex > 0" v-on:click="prev" id="prev_step">navigate_before</i>
+                                    <i class="material-icons" v-if="questionIndex === (userResponses.length -1)" v-on:click="next" id="next_step">navigate_next</i>
                                 </div>
                             </div>
                         </div>
-                        <div v-show="questionIndex === quiz.questions.length">
+                        <div class="result_wrap" v-show="questionIndex === quiz.questions.length">
                             <div>
-                                <br>
-                                <br>
-                                당신은 {{ score() }} 유형입니다.
-                                {{ perc() }} % 일치하는군요!
-                                <canvas id="gauge"></canvas>
+                                당신은 {{ score() }} 유형입니다.<br>
+                                {{ perc() }}% 일치하는군요!
                             </div>
                             <div v-for="item in results.results">
                                 <div v-show="score() === item.score">
@@ -449,7 +457,7 @@
                 {
                         score: "전성하",
                         value: [{
-                            desc: "전성하여",
+                            old: "40",
                             img: "https://www.freeimg.net/photo/1856442/tausendschon-springflower-garden-daisy",
                     }]
                 },
@@ -613,16 +621,16 @@
                         }
                     }
                     return ((modeMap[maxEl] / 3) * 100).toFixed(2);
-                },
-
-                createChart(chartId, chartData) {                
-                    const ctx = $('gauge');
-                    const myChart = new Chart(cts, {
-                        type: chartData.type,
-                        data: chartData.data,
-                        options: chartData.options,
-                    });
                 }
+
+                // createChart(chartId, chartData) {                
+                //     const ctx = $('gauge');
+                //     const myChart = new Chart(cts, {
+                //         type: chartData.type,
+                //         data: chartData.data,
+                //         options: chartData.options,
+                //     });
+                // }
 
                 // colorchange : function() {
                 //     $('label').on('click', function() {
