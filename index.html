@@ -71,7 +71,9 @@
                         </div> -->
                         <div v-for="(question, index) in quiz.questions">
                             <div v-show="index === questionIndex">
-                                <h3 class="question">{{ question.text }}</h3>
+                                <p class="question_number">Q{{questionIndex+1}}</p> 
+                                <p class="question" v-html="question.text"></p>
+                                <!-- <h3 class="question">{{ question.text }}</h3> -->
                                     <div class="answer_wrap">
                                         <div class="answer" v-for="response in question.responses">
                                             <label>
@@ -80,27 +82,47 @@
                                             </label>
                                         </div>
                                     </div>
-                                <div class="btn_wrap">
-                                    <i class="material-icons" v-if="questionIndex > 0" v-on:click="prev" id="prev_step">navigate_before</i>
-                                    <i class="material-icons" v-if="questionIndex === (userResponses.length -1)" v-on:click="next" id="next_step">navigate_next</i>
+                                <div class="btn">
+                                    <div class="btn_wrap">
+                                        <i class="material-icons" v-if="questionIndex > 0" v-on:click="prev" id="prev_step">navigate_before</i>
+                                        <i class="material-icons" v-if="questionIndex === (userResponses.length -1)" v-on:click="next" id="next_step">navigate_next</i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="result_wrap" v-show="questionIndex === quiz.questions.length">
-                            <div>
-                                당신은 {{ score() }} 유형입니다.<br>
-                                {{ perc() }}% 일치하는군요!
-                            </div>
                             <div v-for="item in results.results">
                                 <div v-show="score() === item.score">
-                                    {{ item.score }}
-                                    <div class="img_wrap" v-for="image in item.value">
-                                        <img v-bind:src="image.img">
-                                        {{image.desc}}
+                                    <div class="img_wrap" v-for="candi in item.value">
+                                        
+                                        <div class="result_main">
+                                            {{ score() }} 예비후보와<br>
+                                            {{ perc() }}% 일치
+                                        </div>
+                                        <img v-bind:src="candi.img">
+                                        <img src="img/divider.png" class="divider">
+                                        <div class="result_desc">
+                                                <b>{{candi.party}}</b> 소속 <b>{{ score() }}</b> 예비후보는<br>
+                                                2020년 기준 <b>{{candi.old}}살</b>이고 직업은 <b>{{candi.job}}</b>입니다.<br>
+                                                최종학력은 <b>{{candi.edu}}</b>입니다.<br>
+                                                <b><span v-for="career in candi.career">{{career}} </span></b> 경력이 있고 
+                                                <b>{{candi.crime.length}}</b>건의 전과가 있습니다.
+
+                                                <details>
+                                                    <summary class="result_sub">
+                                                            {{score()}} 후보는 어떻게 답했냐면
+                                                    </summary>
+                                                    <p v-for="qna in candi.qna">
+                                                        Q. {{qna.q}} <br>
+                                                        A. {{qna.a}}
+                                                    </p>
+                                                </details>
+                                        </div>
                                     </div>
                                 </div>
-
+                                
                             </div>
+                            
                         </div>
 
                     </div>
@@ -124,18 +146,18 @@
                     },
                     {
                         text: "중도",
-                        value: ["아프리카"]
+                        value: ["이진복"]
                     },
                     {
                         text: "보수",
-                        value: ["전성하", "박민식"]
+                        value: ["전성하", "박민식", "이진복"]
                     }]
                 },
                 {
-                    text: "문재인 정부의 이념 성향은 어떻게 보십니까?",
+                    text: "문재인 정부의 이념 성향은<br>어떻게 보십니까?",
                     responses: [{
                         text: "진보",
-                        value: ["밀양"]
+                        value: ["이진복"]
                     },
                     {
                         text: "중도진보",
@@ -159,14 +181,14 @@
                     }]
                 },
                 {
-                    text: "문재인 정부의 국정운영에 대해 몇 점을 주시겠습니까? (1점이 최하, 5점이 최고)",
+                    text: "문재인 정부의 국정운영에 대해<br>몇 점을 주시겠습니까?<br>(1점이 최하, 5점이 최고)",
                     responses: [{
                         text: "1점",
                         value: ["전성하", "박민식"]
                     },
                     {
                         text: "2점",
-                        value: ["아프리카"]
+                        value: ["이진복"]
                     },
                     {
                         text: "3점",
@@ -180,76 +202,74 @@
                         text: "5점",
                         value: ["캘리포니아"]
                     }]
+                },
+                {
+                    text: "당신이 생각하는<br>올바른 대통령의 리더십과<br>가장 닮은 대통령은 누구입니까?",
+                    responses: [{
+                        text: "이승만",
+                        value: ["밀양", "부산"]
+                    },
+                    {
+                        text: "박정희",
+                        value: ["전성하", "박민식"]
+                    },
+                    {
+                        text: "전두환",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "노태우",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "김영삼",
+                        value: ["이진복"]
+                    },
+                    {
+                        text: "김대중",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "노무현",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "이명박",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "박근혜",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "문재인",
+                        value: ["아프리카", "캘리포니아"]
+                    },
+                    {
+                        text: "없다",
+                        value: ["아프리카", "캘리포니아"]
+                    }]
                 }
-
-                // 실제 시 주석처리 해제할 것🎉🎉🎉🎉🎉🎉🎉🎉
                 // {
-                //     text: "당신이 생각하는 올바른 대통령의 리더십과 가장 닮은 대통령은 누구입니까?",
-                //     responses: [{
-                //         text: "이승만",
-                //         value: ["밀양", "부산"]
-                //     },
-                //     {
-                //         text: "박정희",
-                //         value: ["전성하", "박민식"]
-                //     },
-                //     {
-                //         text: "전두환",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "노태우",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "김영삼",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "김대중",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "노무현",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "이명박",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "박근혜",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "문재인",
-                //         value: ["아프리카", "캘리포니아"]
-                //     },
-                //     {
-                //         text: "없다",
-                //         value: ["아프리카", "캘리포니아"]
-                //     }]
-                // },
-                // {
-                //     text: "우리나라의 건국일은 언제라고 생각하십니까?",
+                //     text: "우리나라의 건국일은<br>언제라고 생각하십니까?",
                 //     responses: [{
                 //         text: "1919년",
                 //         value: ["밀양", "부산"]
                 //     },
                 //     {
                 //         text: "1948년",
-                //         value: ["전성하", "박민식"]
+                //         value: ["전성하", "박민식", "이진복"]
                 //     }]
                 // },
                 // {
-                //     text: "부산이 가장 시급하게 해결해야 할 문제는 무엇이라고 생각하십니까?",
+                //     text: "부산이 가장 시급하게<br>해결해야 할 문제는<br>무엇이라고 생각하십니까?",
                 //     responses: [{
                 //         text: "저출산 고령화와 청년 인구유출",
                 //         value: ["박민식", "부산"]
                 //     },
                 //     {
                 //         text: "주력산업 붕괴와 신성장산업 부재",
-                //         value: ["전성하", "박민식"]
+                //         value: ["전성하", "박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "수도권 일극주의",
@@ -265,14 +285,14 @@
                 //     }]
                 // },
                 // {
-                //     text: "부산시는 지역화폐 동백전을 운용 중입니다. 지역화폐에 대한 생각은?",
+                //     text: "부산시는 지역화폐 동백전을<br>운용 중입니다.<br>지역화폐에 대한 생각은?",
                 //     responses: [{
                 //         text: "확대해야 한다",
                 //         value: ["전성하", "부산"]
                 //     },
                 //     {
                 //         text: "현행 수준을 유지해야 한다",
-                //         value: ["아프리카", "캘리포니아"]
+                //         value: ["이진복"]
                 //     },
                 //     {
                 //         text: "축소해야 한다",
@@ -284,14 +304,14 @@
                 //     }]
                 // },
                 // {
-                //     text: "북항 재개발 사업 구역의 초고층 건물 허가에 대해 논란이 많습니다. 이에 대한 생각은?",
+                //     text: "북항 재개발 사업 구역의 초고층 건물<br>허가에 대해 논란이 많습니다.<br>이에 대한 생각은?",
                 //     responses: [{
                 //         text: "주거시설과 초고층건물을 허용해 고밀도 개발",
                 //         value: ["밀양", "부산"]
                 //     },
                 //     {
                 //         text: "사업성이 떨어져도 친수공간 확보와 저밀도 개발",
-                //         value: ["아프리카", "캘리포니아"]
+                //         value: ["이진복"]
                 //     },
                 //     {
                 //         text: "기타",
@@ -299,7 +319,7 @@
                 //     }]
                 // },
                 // {
-                //     text: "가덕도 신공항을 추진하는 데 가장 필요한 것은 무엇이라고 보십니까?",
+                //     text: "가덕도 신공항을 추진하는 데<br>가장 필요한 것은 무엇이라고 보십니까?",
                 //     responses: [{
                 //         text: "부산 울산 경남 시민들의 협조",
                 //         value: ["밀양", "부산"]
@@ -310,7 +330,7 @@
                 //     },
                 //     {
                 //         text: "정부의 강력한 의지",
-                //         value: ["전성하", "박민식"]
+                //         value: ["전성하", "박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "정치권의 지지",
@@ -325,7 +345,7 @@
                 //     },
                 //     {
                 //         text: "느슨한 형태의 통합을 거쳐 단계적인 통합이 필요하다",
-                //         value: ["전성하", "캘리포니아"]
+                //         value: ["전성하", "이진복"]
                 //     },
                 //     {
                 //         text: "행정구역 통합에 반대한다",
@@ -337,10 +357,10 @@
                 //     }]
                 // },
                 // {
-                //     text: "민간사업자가 추진 중인 해운대~오륙도 해상케이블카 사업에 대한 의견은 무엇입니까?",
+                //     text: "민간사업자가 추진 중인<br>해운대~오륙도 해상케이블카 사업에 대한<br>의견은 무엇입니까?",
                 //     responses: [{
                 //         text: "관광활성화와 고용 창출을 위해 적극 추진해야 한다",
-                //         value: ["박민식", "부산"]
+                //         value: ["박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "환경 파괴 논란이 큰 만큼 중단해야 한다",
@@ -352,7 +372,7 @@
                 //     }]
                 // },
                 // {
-                //     text: "BRT(버스전용차로) 부산 전역 확대에 대한 의견은 무엇인가요?",
+                //     text: "BRT(버스전용차로) 부산 전역 확대에 대한<br>의견은 무엇인가요?",
                 //     responses: [{
                 //         text: "즉시 추진해야 한다",
                 //         value: ["밀양", "부산"]
@@ -363,7 +383,7 @@
                 //     },
                 //     {
                 //         text: "추가 확대를 반대한다",
-                //         value: ["아프리카", "캘리포니아"]
+                //         value: ["이진복"]
                 //     },
                 //     {
                 //         text: "기존 구간도 원상복구 해야한다",
@@ -371,14 +391,14 @@
                 //     }]
                 // },
                 // {
-                //     text: "코로나19 확산에 따라 정부의 재정 투입이 늘고있습니다. 이에 대한 의견은?",
+                //     text: "코로나19 확산에 따라<br>정부의 재정 투입이 늘고있습니다.<br>이에 대한 의견은?",
                 //     responses: [{
                 //         text: "정부 부채가 늘어나도 전국민 대상 보편적 지원을 늘려야 한다",
                 //         value: ["밀양", "부산"]
                 //     },
                 //     {
                 //         text: "소상공인이나 저소득층 등을 위한 선별적 지원만 해야 한다",
-                //         value: ["전성하", "박민식"]
+                //         value: ["전성하", "박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "더 이상의 재정 투입을 통한 경기활성화는 중단해야 한다",
@@ -390,10 +410,10 @@
                 //     }]
                 // },
                 // {
-                //     text: "52시간 근로제의 중소기업 전면 적용을 코로나19 위기 극복 이후로 연기하자는 제안에 대한 생각은?",
+                //     text: "52시간 근로제의 중소기업 전면 적용을<br>코로나19 위기 극복 이후로 연기하자는<br>제안에 대한 생각은?",
                 //     responses: [{
                 //         text: "찬성한다",
-                //         value: ["전성하", "박민식"]
+                //         value: ["전성하", "박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "반대한다",
@@ -408,7 +428,7 @@
                 //     },
                 //     {
                 //         text: "집값 폭등을 유발한 만큼 방향을 전환해야 한다",
-                //         value: ["박민식", "캘리포니아"]
+                //         value: ["박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "기타",
@@ -431,7 +451,7 @@
                 //     },
                 //     {
                 //         text: "즉시 중단하고 원전을 유지해야 한다",
-                //         value: ["박민식", "캘리포니아"]
+                //         value: ["박민식", "이진복"]
                 //     }]
                 // },
                 // {
@@ -442,7 +462,7 @@
                 //     },
                 //     {
                 //         text: "1~5년에 걸쳐 단계적으로 시행해야 한다",
-                //         value: ["전성하", "박민식"]
+                //         value: ["전성하", "박민식", "이진복"]
                 //     },
                 //     {
                 //         text: "기본소득 도입에 반대한다",
@@ -458,103 +478,166 @@
                         score: "전성하",
                         value: [{
                             old: "40",
-                            img: "https://www.freeimg.net/photo/1856442/tausendschon-springflower-garden-daisy",
-                    }]
+                            party: "국민의힘",
+                            job: "정당인",
+                            edu: "미기재",
+                            crime: [],
+                            career: ["(현) 사단법인 부산포럼 공동대표", "(현) 사회복지법인 성경복지재단 이사장"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/jsh.png",
+                            qna: [{
+                                q: "나의 정치적 지향점은 무엇입니까?",
+                                a: "보수"
+                            },
+                            {
+                                q: "문재인 정부의 이념 성향은 어떻게 보십니까?",
+                                a: "기타. 보수적 사회주의"
+                            },
+                            {
+                                q: "문재인 정부의 국정운영에 대해 몇 점을 주시겠습니까?",
+                                a: "1점"
+                            },
+                            {
+                                q: "당신이 생각하는 올바른 대통령의 리더십과 가장 닮은 대통령은 누구입니까?",
+                                a: "박정희 대통령. 다만 비판과 자유의지에 대한 탄압, 그리고 측근들의 부정부패는 문제가 많음"
+                            },
+                            {
+                                q: "우리나라의 건국일은 언제라고 생각하십니까?",
+                                a: "1948년"
+                            },
+                            {
+                                q: "부산이 가장 시급하게 해결해야 할 문제는 무엇이라고 생각하십니까?",
+                                a: "주력산업 붕괴와 신성장산업 부재"
+                            },
+                            {
+                                q: "부산시는 지역화폐 동백전을 운용 중입니다. 지역화폐에 대한 생각은?",
+                                a: "확대해야 한다"
+                            },
+                            {
+                                q: "북항 재개발 사업 구역의 초고층 건물 허가에 대해 논란이 많습니다. 이에 대한 생각은?",
+                                a: "기타. 건물과 부지의 특성에 따라 초고층 건물과 친수공간 및 저밀도 개발의 적절한 배분이 필요"
+                            },
+                            {
+                                q: "가덕도 신공항을 추진하는 데 가장 필요한 것은 무엇이라고 보십니까?",
+                                a: "정부의 강력한 의지"
+                            },
+                            {
+                                q:"부산울산경남의 행정구역 통합에 대한 의견은?",
+                                a:"느슨한 형태의 통합을 거쳐 단계적인 통합이 필요하다"
+                            },
+                            {
+                                q:"민간사업자가 추진 중인 해운대~오륙도 해상케이블카 사업에 대한 의견은 무엇입니까?",
+                                a:"기타. 관광활성화는 가능하나, 고용창출은 회의적. 진행하더라도 환경 훼손을 최소화하되, 수영만 요트경기장 등 직접적인 영향을 받는 사업에 대한 대책 등도 동시에 고려해야 한다"
+                            },
+                            {
+                                q:"BRT(버스전용차로) 부산 전역 확대에 대한 의견은 무엇인가요?",
+                                a:"장기적 관점에서 추진"
+                            },
+                            {
+                                q:"코로나19 확산에 따라 정부의 재정 투입이 늘고 있습니다. 이에 대한 의견은?",
+                                a:"소상공인이나 저소득층 등을 위한 선별적 지원만 해야 한다"
+                            },
+                            {
+                                q:"52시간 근로제의 중소기업 전면 적용을 코로나19 위기 극복 이후로 연기하자는 제안에 대한 생각은?",
+                                a:"찬성한다"
+                            },
+                            {
+                                q:"정부의 부동산 정책에 대한 생각은?",
+                                a:"기타. 시장 경제 체제에 대한 신뢰를 가져야 하고 공급에 기반한 정책을 우선하되, 기존 임대 사업자들에 대한 퇴로를 열어주어야 한다. 추가 주택 공급시에 물량의 70% 이상을 무주택자에게만 분양하되, 3~5년 실거주를 해야만 하도록 한다. 청년과 신혼부부에 대한 우선순위를 높이되, 기존 장기 청약자에 대한 배려도 충분히 해야한다. 청년과 신혼부부 우선 대상 주택과 비구분 주택을 투트랙으로 진행하는 것이 필요하다"
+                            },
+                            {
+                                q:"탈원전에 대한 의견은 무엇입니까?",
+                                a:"일시 중단하고 다시 고민해봐야 한다"
+                            },
+                            {
+                                q:"기본소득에 대해 어떻게 생각하십니까?",
+                                a:"1~5년에 걸쳐 단계적으로 시행해야 한다"
+                            },
+                            {
+                                q:"인생에서 가장 중요하게 생각하는 가치를 3개의 단어로 적어주세요",
+                                a:"공정, 협치, 소통 (경청과 시민 의견 존중)"
+                            },
+                            {
+                                q: "나는 '000 부산시장이 되고 싶다'의 빈칸을 채워주세요",
+                                a: "미래 발전적인 책임감 있는 부산시장이 되고 싶다"
+                            }]}]
                 },
                 {
                         score: "박민식",
                         value: [{
-                            desc: "박민식박민식박민식",
-                            img: "https://www.freeimg.net/photo/1856442/tausendschon-springflower-garden-daisy",
+                            old: "55",
+                            party: "국민의힘",
+                            job: "변호사",
+                            edu: "서울대학교 사회과학대학 외교학과 졸업",
+                            crime: [],
+                            career: ["(전) 서울중앙지검 특수1부", "제1819대 국회의원"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/pms.png",
                     }]
                 },
                 {
-                        score: "밀양",
+                        score: "오승철",
                         value: [{
-                            desc: "당신은 밀양 타입이시군요. 밀양 타입ㅇ븐 어쩌구저쩌꾸입니다.",
-                            img: "C:/Users/USER/Desktop/quiz_template/img/result.png",
+                            old: "63",
+                            party: "국민의힘",
+                            job: "대한인성학회 이사장",
+                            edu: "동아대학교 대학원 정치학 박사과정 졸업",
+                            crime: [],
+                            career: ["(전) 제20대 국회의원선거 부산진구갑 후보", "(현) 부산복지21 총봉사회 후원회장"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/osc.png",
                     }]
                 },
                     {
-                        score:"아프리카",
+                        score:"유재중",
                         value: [{
-                            desc: "당신은 아프리카군요. 어저엉ㅈ러머ㅓㅁ엄",
-                            img: "https://www.freeimg.net/photo/1651932/snowdrop-spring-flower-bloom",
+                            old: "65",
+                            party: "국민의힘",
+                            job: "부경대학교 명예석좌교수",
+                            edu: "부산대학교 대학원 법학과 졸업 (법학박사)",
+                            crime: [{punish: "벌금 150만원", detail : {what: ["도로교통법위반"], date: "1995.11.13"}}],
+                            career: ["(전) 제181920대 국회의원", "(현) 부경대학교 명예석좌교수"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/yjj.png",
                     }]
                 },
                     {
-                        score:"캘리포니아",
+                        score:"이진복",
                         value: [{
-                            desc: "당신은 캘리포니아군요. 뉴욕가고싶어",
-                            img: "https://www.freeimg.net/photo/570259/spring-crocus-snowdrop-springmeadow",
+                            old: "63세",
+                            party: "국민의힘",
+                            job: "정당인",
+                            edu: "동아대학교 정책과학대학원 졸업 (행정학석사)",
+                            crime: [],
+                            career: ["(전) 동래구청장", "(전) 제181920대 국회의원"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/ljb.png",
                     }]
                 },
                 {
-                        score:"부산",
+                        score:"박형준",
                         value: [{
-                            desc: "붓산아입니까",
-                            img: "https://www.freeimg.net/photo/570259/spring-crocus-snowdrop-springmeadow",
+                            old: "61세",
+                            party: "국민의힘",
+                            job: "교수",
+                            edu: "고려대학교 대학원 사회학과 박사과정 졸업 (문학박사)",
+                            crime: [],
+                            career: ["(현) 동아대학교 국제전문대학원 국제학과 교수", "(전) 대한민국 국회사무처 사무총장"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/phj.png",
+                    }]
+                },
+                {
+                        score:"노정현",
+                        value: [{
+                            old: "43세",
+                            party: "진보당",
+                            job: "정당인",
+                            edu: "부산대학교 상과대학 경영학부 경영학과 졸업",
+                            crime: [{punish: "징역 1년 집행유예 2년", detail : {what: ["특수공무집행방해", "특수공무집행방해치상", "일반교통방해", "폭력행위등처벌에관한법률위반", "집회및시위에관한법률위반", "화염병사용등의처벌에관한법률위반"], date: "1997.1.29"}},
+                                    {punish: "징역 1년6월 집행유예 2년", detail : {what: ["일반교통방해","폭력행위등처벌에관한법률위반", "국가보안법위반(찬양,고무 등)", "집회및시위에관한법률위반"], date: "2002.11.26"}},
+                                    {punish: "벌금 250만원", detail : {what: ["일반교통방해"], date: "2014.8.21"}}],
+                            career: ["(전) 제67대 부산광역시 연제구의회의원", "(현) 진보당 부산광역시당 위원장"],
+                            img: "C:/Users/USER/Desktop/quiz_template/img/njh.png",
                     }]
                 }],
             };
 
-            var chartData = {
-                type: 'line',
-                data: {
-                    labels: ['Mercury', 'Venus', 'Earth', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune'],
-                    datasets: [
-                    { // one line graph
-                        label: 'Number of Moons',
-                        data: [0, 0, 1, 2, 67, 62, 27, 14],
-                        backgroundColor: [
-                        'rgba(54,73,93,.5)', // Blue
-                        'rgba(54,73,93,.5)',
-                        'rgba(54,73,93,.5)',
-                        'rgba(54,73,93,.5)',
-                        'rgba(54,73,93,.5)',
-                        'rgba(54,73,93,.5)',
-                        'rgba(54,73,93,.5)',
-                        'rgba(54,73,93,.5)'
-                        ],
-                        borderColor: [
-                        '#36495d',
-                        '#36495d',
-                        '#36495d',
-                        '#36495d',
-                        '#36495d',
-                        '#36495d',
-                        '#36495d',
-                        '#36495d',
-                        ],
-                        borderWidth: 3
-                    },
-                    { // another line graph
-                        label: 'Planet Mass (x1,000 km)',
-                        data: [4.8, 12.1, 12.7, 6.7, 139.8, 116.4, 50.7, 49.2],
-                        backgroundColor: [
-                        'rgba(71, 183,132,.5)', // Green
-                        ],
-                        borderColor: [
-                        '#47b784',
-                        ],
-                        borderWidth: 3
-                    }
-                ]
-                },
-                options : {
-                    responsive: true,
-                    lineTension: 1,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                padding: 25,
-                            }
-                        }]
-                    }
-                }
-            }
-        
+                    
         new Vue({
             el: '#app',
             data: {
@@ -563,7 +646,6 @@
                 questionIndex: 0,
                 userResponses: Array(),
                 isHidden: false,
-                chartData: chartData,
             },
             methods: {
                 next: function() {
@@ -598,7 +680,6 @@
                         }
                         }
                     }
-                    console.log(modeMap);
                     return maxEl;
 
                 },
@@ -622,6 +703,11 @@
                     }
                     return ((modeMap[maxEl] / 3) * 100).toFixed(2);
                 }
+
+                // crimeCount: function() {
+                //     var results = Resultdata;
+                //     return c;
+                // }
 
                 // createChart(chartId, chartData) {                
                 //     const ctx = $('gauge');
