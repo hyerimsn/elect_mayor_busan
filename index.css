@@ -246,6 +246,7 @@ b{
 
 
     .startbutton {
+        font-family: 'NanumSquare', sans-serif;
         position: fixed;
         bottom: 20%;
         left: 0;
@@ -494,7 +495,7 @@ b{
 
     .result_wrap {
         overflow: auto;
-        height: 80vh;
+        height: 88vh;
         display: block;
         position: relative;
         margin: 0 auto;
@@ -534,7 +535,7 @@ b{
     }
 
     .result_main {
-        font-size: 2em;
+        font-size: 3em;
         font-weight: 900;
         color: #daccff;
         position: relative;
@@ -645,6 +646,7 @@ b{
     }
 
     #myBtn {
+        font-family: 'NanumSquare', sans-serif;
         position: relative;
         font-size: 1em;
         font-weight: bold;
@@ -1234,7 +1236,7 @@ b{
     }
 
     .result_main {
-        font-size: 2em;
+        font-size: 2.5em;
         font-weight: 900;
         color: #daccff;
         position: relative;
@@ -1348,13 +1350,14 @@ b{
     }
 
     #myBtn {
+        font-family: 'NanumSquare', sans-serif;
         position: relative;
         font-size: 1.1rem;
         font-weight: bold;
         color: #ffffff;
         display: block;
         margin: 0 auto;
-        margin-top: 1em;
+        margin-top: 2em;
         margin-bottom: 3em;
         border-radius: 50px;
         border: 0px #000000 solid;
