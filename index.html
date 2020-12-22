@@ -157,7 +157,7 @@
                                         <div class="second_img_wrap" v-for="candi in item.value">
                                             <img v-bind:src="candi.img">
                                             <div class="second_desc">
-                                                <div class="second_sub">두번째로 비슷한 후보</div>
+                                                <div class="second_sub">두번째로<br>비슷한 후보</div>
 
                                                 {{ item.score }} 예비후보<br>
                                                 {{ candi.party }} 소속<br>
@@ -175,11 +175,9 @@
                                             <div class="second_img_wrap" v-for="candi in item.value">
                                                 <img v-bind:src="candi.img">
                                                 <div class="second_desc">
-                                                    <div class="second_sub">생각이 가장 다른 후보는</div>
-    
+                                                    <div class="second_sub">가장 생각이<br>다른 후보는</div>
+                                                    {{candi.party}}<br>
                                                     {{ item.score }} 예비후보<br>
-                                                    {{candi.party}} 소속<br>
-                                                       
                                                 </div>
                                         </div>
                                     </div>
