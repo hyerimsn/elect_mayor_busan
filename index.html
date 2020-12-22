@@ -114,7 +114,16 @@
                                                 <b><span v-for="career in candi.career">{{career}} </span></b> 경력이 있으며
                                                 전과는 <b>{{candi.crime.length}}</b>건 입니다.
                                                 <br>
-                                                <button id="myBtn" v-on:click="modal">{{score()}} 후보는 어떻게 답했냐면</button>
+                                                <details>
+                                                    <summary id="myBtn">{{score()}} 후보는 어떻게 답했냐면</summary>
+                                                    <div class="modal_content">
+                                                        <p v-for="qna in candi.qna">
+                                                            <b>Q. {{qna.q}} </b><br>
+                                                            A. {{qna.a}}
+                                                        </p>
+                                                    </div>
+                                                </details>
+                                                <!-- <button id="myBtn" v-on:click="modal">{{score()}} 후보는 어떻게 답했냐면</button>
                                                 <div id="modal" class="modal">
                                                     <span class="close" v-on:click="close">&times;</span>
                                                     <div class="modal_content">
@@ -124,7 +133,7 @@
                                                             A. {{qna.a}}
                                                         </p>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                         </div>
                                         
                                     </div>
@@ -529,7 +538,7 @@
                         score: "전성하",
                         value: [{
                             nick: ["#정치신인", "#뇌과학자", "#젊은후보"],
-                            old: "40",
+                            old: "40세",
                             party: "국민의힘",
                             job: "정당인",
                             edu: "킹스칼리지 런던 신경과학 (석사)",
@@ -611,18 +620,19 @@
                             {
                                 q: "나는 '000 부산시장이 되고 싶다'의 빈칸을 채워주세요",
                                 a: "미래 발전적인 책임감 있는 부산시장이 되고 싶다"
-                            }]}]
+                            }]
+                    }]
                 },
                 {
                         score: "박민식",
                         value: [{
                             nick: ["#재도전", "#법조인_외교관", "#전_국회의원"],
-                            old: "55",
+                            old: "55세",
                             party: "국민의힘",
                             job: "변호사",
                             edu: "서울대학교 사회과학대학 외교학과 졸업",
                             crime: [],
-                            career: ["(전) 서울중앙지검 특수1부", "제1819대 국회의원"],
+                            career: ["(전) 서울중앙지검 특수1부", "제18·19대 국회의원"],
                             img: "C:/Users/DNews-12/Desktop/quiz_template/elect_mayor_busan/img/pms_bnw.png",
                             qna: [{
                                 q: "나의 정치적 지향점은 무엇입니까?",

@@ -620,8 +620,10 @@ b{
         background-color: #fefefe;
         color: #000000;
         margin: 1em auto;
-        width: 90%;
+        padding: 0.5em 1em;
+        border-radius: 30px;
         text-align: left;
+        box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
     }
 
     .close{
@@ -641,7 +643,7 @@ b{
     #myBtn {
         position: relative;
         bottom: 20%;
-        font-size: 0.8em;
+        font-size: 1em;
         font-weight: bold;
         color: #ffffff;
         width: 300px;
@@ -1314,10 +1316,13 @@ b{
 
     .modal_content {
         text-align: left;
+        font-size: 0.9em;
         background-color: #fefefe;
         color: #000000;
-        margin: 1em auto;
-        width: 90%;
+        margin-top: 1em;
+        padding: 0.5em 1em;
+        border-radius: 30px;
+        box-shadow: 0 4px 15px 0 rgba(126, 52, 161, 0.75);
     }
 
     .close{
@@ -1337,10 +1342,9 @@ b{
     #myBtn {
         position: relative;
         bottom: 20%;
-        font-size: 1rem;
+        font-size: 1.1rem;
         font-weight: bold;
         color: #ffffff;
-        width: 100%;
         display: block;
         margin: 0 auto;
         margin-top: 1em;
