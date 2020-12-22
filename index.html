@@ -119,7 +119,8 @@
                                                 <span v-for="value in candi.threevalues">
                                                     <b>{{value}} </b> 
                                                 </span>이/가 중요하다는 {{ score() }} 후보.
-                                                <br><br>어때요 좀 비슷한 것 같나요?
+                                                <br><br>어때요? 좀 비슷한 것 같나요?
+                                                
                                                 <details>
                                                     <summary id="myBtn">{{score()}} 후보는 어떻게 답했냐면</summary>
                                                     <div class="modal_content">
@@ -184,7 +185,9 @@
                                     </div>
                                 </div>
                                 </div>
+                                <button id="myBtn" v-on:click="reload">다시 하기</button>
                             </div>
+                            
                         </div>
 
                     </div>
@@ -727,7 +730,7 @@
                 //             edu: "부산대학교 대학원 법학과 졸업 (법학박사)",
                 //             crime: [{punish: "벌금 150만원", detail : {what: ["도로교통법위반"], date: "1995.11.13"}}],
                 //             career: ["(전) 제181920대 국회의원", "(현) 부경대학교 명예석좌교수"],
-                //             img: "C:/Users/USER/Desktop/quiz_template/img/yjj.png",
+                //             img: "C:/Users/USER/Desktop/quiz_template/img/yjj_bnw.png",
                 //     }]
                 // },
                     {
@@ -816,7 +819,7 @@
                 {
                         score:"박형준",
                         value: [{
-                            nick: ["#교수", "#사회학자", "#전_국회사무총장"],
+                            nick: ["#교수", "#MB정부_출신", "#전_국회사무총장"],
                             old: "61세",
                             party: "국민의힘",
                             job: "교수",
@@ -914,14 +917,13 @@
                     //정보수정필요
                         score:"김영춘",
                         value: [{
-                            old: "43세",
-                            party: "진보당",
-                            job: "정당인",
-                            edu: "부산대학교 상과대학 경영학부 경영학과 졸업",
-                            crime: [{punish: "징역 1년 집행유예 2년", detail : {what: ["특수공무집행방해", "특수공무집행방해치상", "일반교통방해", "폭력행위등처벌에관한법률위반", "집회및시위에관한법률위반", "화염병사용등의처벌에관한법률위반"], date: "1997.1.29"}},
-                                    {punish: "징역 1년6월 집행유예 2년", detail : {what: ["일반교통방해","폭력행위등처벌에관한법률위반", "국가보안법위반(찬양,고무 등)", "집회및시위에관한법률위반"], date: "2002.11.26"}},
-                                    {punish: "벌금 250만원", detail : {what: ["일반교통방해"], date: "2014.8.21"}}],
-                            career: ["(전) 제6·7대 부산광역시 연제구의회의원,", "(현) 진보당 부산광역시당 위원장"],
+                            nick: ["#국회사무총장", "#장관_출신", "#3선의원"],
+                            old: "58세",
+                            party: "더불어민주당",
+                            job: "국회사무총장",
+                            edu: "고려대학교 대학원 정치학 (석사)",
+                            crime: [{punish: "징역 1년 집행유예 2년", detail : {what: ["화염병사용등의처벌에관한법률위반"], date: "1997.1.29"}}],
+                            career: ["(전) 제20대 해양수산부장관,", "(전)제16·17·20대 국회의원"],
                             img: "C:/Users/DNews-12/Desktop/quiz_template/elect_mayor_busan/img/kyc_bnw.png",
                             threevalues : ["사명감,", "책임,", "사랑"],
                             mayor : "투자 유치를 위해 발로 뛰는 세일즈맨",
@@ -1185,42 +1187,10 @@
 
                     return [second, least];
                 },
-                
-                modal: function() {
-                    document.getElementById('modal').style.visibility = "visible";
-                    console.log('get clicked!');
-                        // var modal = document.getElementById("modal");
-                        // var btn = document.getElementById("myBtn");
-                        // var span = document.getElementsByClassName("close")[0];
 
-                        // btn.onclick = function() {
-                        //     modal.style.display = "block";
-                        //     console.log('클릭됐다');
-                        // };
-
-                        // span.onclick = function() {
-                        //     modal.style.display = "none";
-                        // };
-
-                        // window.onclick = function(event) {
-                        //     if (event.target == modal) {
-                        //         modal.style.display = "none";
-                        //     };
-                        // };
-                },
-                
-                close: function(){
-                    document.getElementById('modal').style.visibility = "hidden";
-                },
-
-            // $("#myBtn").click(function(){
-            //     console.log("get clicked");
-            //     $(".modal").css("display", "block");
-            // });
-
-            // $(".close").click(function(){
-            //     $(".modal").css("display", "none");
-            // });
+                reload: function() {
+                    window.location.reload();
+                }
             
             }
 

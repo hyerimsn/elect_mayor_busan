@@ -15,6 +15,10 @@ b{
 /* PC */
 
 @media screen and (min-width: 769px){
+    body {
+        overflow-y: hidden;
+    }
+
     #app {
         margin: 0 auto;
         width: 600px;
@@ -650,6 +654,7 @@ b{
         display: block;
         margin: 0 auto;
         margin-top: 2em;
+        margin-bottom: 3em;
         border-radius: 50px;
         border: 0px #000000 solid;
         background: none;
@@ -685,6 +690,10 @@ b{
 /* 모바일 */
 
 @media screen and (max-width: 768px){
+    body{
+        overflow-y: auto
+    }
+
     #app {
         margin: 0 auto;
         width: 375px;
@@ -1241,7 +1250,7 @@ b{
         font-size: 1.3em;
         line-height: 1.5em;
         margin: 1em auto;
-        width: 80%;
+        width: 88%;
         text-align: center;
         /* height: 30vh;
         overflow: auto; */
@@ -1348,6 +1357,7 @@ b{
         display: block;
         margin: 0 auto;
         margin-top: 1em;
+        margin-bottom: 3em;
         border-radius: 50px;
         border: 0px #000000 solid;
         background: none;
