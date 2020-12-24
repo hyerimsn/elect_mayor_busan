@@ -157,7 +157,7 @@
                                         <div class="second_img_wrap" v-for="candi in item.value">
                                             <img v-bind:src="candi.img">
                                             <div class="second_desc">
-                                                <div class="second_sub">두번째로 비슷한 후보</div>
+                                                <div class="second_sub">두번째로<br>비슷한 후보</div>
 
                                                 {{ item.score }} 예비후보<br>
                                                 {{ candi.party }} 소속<br>
@@ -175,11 +175,9 @@
                                             <div class="second_img_wrap" v-for="candi in item.value">
                                                 <img v-bind:src="candi.img">
                                                 <div class="second_desc">
-                                                    <div class="second_sub">생각이 가장 다른 후보는</div>
-    
+                                                    <div class="second_sub">가장 생각이<br>다른 후보는</div>
+                                                    {{candi.party}}<br>
                                                     {{ item.score }} 예비후보<br>
-                                                    {{candi.party}} 소속<br>
-                                                       
                                                 </div>
                                         </div>
                                     </div>
@@ -954,7 +952,7 @@
                             career: ["(전) 제6·7대 부산광역시 연제구의회의원", "(현) 진보당 부산광역시당 위원장"],
                             threevalues : ["자주,", "민중,", "직접정치"],
                             mayor : "평범한 이웃같은 부산시장",
-                            img: "C:/Users/USER/Desktop/quiz_template/img/njh_bnw.png",
+                            img: "C:/Users/DNews-12/Desktop/quiz_template/elect_mayor_busan/img/njh_bnw.png",
                             qna: [{
                                 q: "나의 정치적 지향점은 무엇입니까?",
                                 a: "진보"
